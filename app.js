@@ -43,11 +43,14 @@ function getAction(options = {}) {
         fetch(getQueryURL(options))
          .then(res => res.json())
          .then(data => {
-            if(!data.main) {
+            
+            // return early if there is no match for query
+            if(!data.main) {  
                 console.log('No city found for query', options.city);
                 return; 
             }
 
+            // display weather details 
             console.log(`\nWeather for ${options.city} today:\n\n`); 
             console.log(`Description:\t${data.weather[0].description}`); 
             console.log(`Right now:\t${data.main.temp}${options.units_full_name}`);
