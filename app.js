@@ -69,6 +69,7 @@ function getQueryURL({city, unit}) {
     return `http://api.openweathermap.org/data/2.5/weather?APPID=2589c4b2eacc7f42193d27bad88fec62&units=${UNIT}&q=${city}`; 
 }
 
+// main function 
 function getWeather(args) {
     if(args.length) {
         getAction(getArgs(args)); 
