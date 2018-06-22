@@ -31,7 +31,7 @@ weather stockholm
 weather florida --f
 ```
 
-##### Set default city and unit
+##### Set default city and/or unit
 - -d || --defaults
 - City: String (city=stockholm)
 - Units: String (units=celsius)
@@ -40,4 +40,12 @@ weather florida --f
 weather -d city=stockholm units=celsius
 weather -defaults units=fahrenheit
 ```
+
+##### Display default settings
+```
+weather -d
+weather --defaults
+```
+
+
 
