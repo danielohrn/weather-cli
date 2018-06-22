@@ -1,4 +1,5 @@
 const fetch = require('node-fetch'); 
+const { readSettings, writeSettings } = require('./settings'); 
 
 
 // returns arguments object 
@@ -8,7 +9,7 @@ function getArgs(input = []) {
     
     const _arguments = { type: null }; 
     
-    // configure defaults not yet implemented 
+    // configure defaults 
     if(ACTION === '--defaults' || ACTION === '-d') {
         _arguments.type = 'config';
         
@@ -32,7 +33,12 @@ function getArgs(input = []) {
             units_full_name: input[1] === '-f' ? '°F' : '°C'
         };
     }
-    
+}
+
+function getUnitSymbol(input) {
+    return (
+        input === '-f' || input === '-fahrenheit' || input === 'fahrenheit' ? '°F' : '°C'
+    ); 
 }
 
 
@@ -59,9 +65,29 @@ function getAction(options = {}) {
          })
          .catch(err => console.log('There was an error:', err));
     
-       // 'config' not implemented 
+       // sets a default city and unit 
     } else if(options.type === 'config') {
-        console.log('Defaults set with', options);
+
+        // read the file 
+        readSettings()
+         .then(settings => { 
+            // if there are no args supplied, display current settings 
+            if(!options.city && !options.units) {
+                console.log('Your default settings are:', settings); 
+            } else {
+                for(let key in options) {
+                    if(key !== 'type') {
+                        settings[key] = options[key];
+                    }
+                }
+                // update the settings
+                writeSettings(JSON.stringify(settings))
+                 .then(response => {
+                    console.log('Your new settings are:', response); 
+                 });
+            }
+        })
+        .catch(err => console.log(err)); 
     }
     
 }
@@ -77,7 +103,25 @@ function getWeather(args) {
     if(args.length) {
         getAction(getArgs(args)); 
     } else {
-        console.log('Don\'t forget the city'); 
+        // messy implementation of user default settings for city and units
+        readSettings()
+         .then(settings => {
+             if(settings.city || settings.units) {
+                fetch(getQueryURL({city: settings.city, unit: settings.units}))
+                .then(res => res.json())  
+                .then(weather => {
+                    // display weather details 
+                    console.log(`\nWeather for ${settings.city} today:\n\n`); 
+                    console.log(`Description:\t${weather.weather[0].description}`); 
+                    console.log(`Right now:\t${weather.main.temp}${getUnitSymbol(settings.units)}`);
+                    console.log(`Min today:\t${weather.main.temp_min}${getUnitSymbol(settings.units)}`);
+                    console.log(`Max today:\t${weather.main.temp_max}${getUnitSymbol(settings.units)}\n\n`);
+                })               
+                .catch(err => console.log(err)); 
+             } else {
+                console.log('Don\'t forget the city'); 
+             }
+         }); 
     }
 }
 

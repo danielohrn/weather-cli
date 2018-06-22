@@ -1,4 +1,0 @@
-{
-    "city": "Stockholm", 
-    "units": "celisus"
-}
