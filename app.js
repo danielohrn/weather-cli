@@ -83,7 +83,7 @@ function getAction(options = {}) {
                 // update the settings
                 writeSettings(JSON.stringify(settings))
                  .then(response => {
-                    console.log('Your new settings are:', response); 
+                    console.log('Your new default settings are:', response); 
                  });
             }
         })
