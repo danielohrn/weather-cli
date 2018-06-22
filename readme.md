@@ -11,11 +11,15 @@ npm install
 #### Use the app 
 in the /weather-cli directory: 
 ```
-./index.js
+./index.js {CITY}
 ``` 
 or set up alias pointing to the directory like: 
 ```
 alias weather="node ~/{YOUR_PATH}/weather-cli/index.js "
+```
+and then: 
+```
+weather {CITY} 
 ```
 
 #### Arguments
