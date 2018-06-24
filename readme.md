@@ -10,9 +10,14 @@ npm install
 
 #### Use the app 
 in the /weather-cli directory: 
+
 ```
 ./index.js {CITY}
 ``` 
+or: 
+```
+node index.js {CITY}
+```
 or set up alias pointing to the directory like: 
 ```
 alias weather="node ~/{YOUR_PATH}/weather-cli/index.js "
@@ -28,7 +33,7 @@ weather {CITY}
 - Units: String (-c || --celsius || -f || --fahrenheit) Default: Celsius 
 ```
 weather stockholm
-weather florida --f
+weather florida -f
 ```
 
 ##### Set default city and/or unit
